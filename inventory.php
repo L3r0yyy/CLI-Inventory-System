@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require 'vendor/autoload.php';
 
 //parent
 class Product {
@@ -52,7 +53,7 @@ class Product {
 //child
 class SoftwareProduct extends Product {
     public function getProductType(): string {
-      return "Digital License";  
+      return "Software Product";  
     }
 }
 
@@ -63,7 +64,7 @@ $my_stock = [
     new Product("OnePlus 12R", 45000.0, 30, "Smartphone"),
     new Product("Dell XPS 15", 150000.0, 10, "Laptop"),
     new Product("Logitech MX Master 3S", 12000.0, 50, "Accessories"),
-    new Product("Sony WH-1000XM5", 35000.0, 12, "Accessories"),
+    new SoftwareProduct("Microsoft Office 365 Full Suite", 20000.0, 12, "Software"),
     new SoftwareProduct("Windows 11 Pro", 20000.0,1000, "Software" ),
 ];
 
@@ -73,7 +74,8 @@ while (true) {
     echo "1. View All Products\n";
     echo "2. Search & Edit\n";
     echo "3. Filter by Category\n";
-    echo "4. Exit The System\n";
+    echo "4. Add New Product\n";
+    echo "5. Exit The System\n";
     echo "Selection: ";
 
     $choice = trim(fgets(STDIN));
@@ -82,11 +84,15 @@ while (true) {
     switch ($choice) {
         
         case "1": // VIEW ALL
-            echo "\n" . str_repeat("-", 60) . "\n";
+            echo "\n" . str_repeat("-", 80) . "\n"; 
             foreach ($my_stock as $item) {
-                echo "[" . $item->getProductType() . "] " . $item->getName() . " | STOCK: " . $item->getStock() . " | KES " . $item->getPrice() . "\n";
+                echo "[" . $item->getProductType() . "] " . 
+                     str_pad($item->getName(), 30) . " | " . 
+                     str_pad("CATEGORY: " . $item->getCategory(), 15) . " | " . 
+                     "STOCK: " . str_pad((string)$item->getStock(), 5) . " | " . 
+                     "KES " . number_format($item->getPrice()) . "\n";
             }
-            echo str_repeat("-", 60) . "\n";
+            echo str_repeat("-", 80) . "\n";
             break; 
 
         case "2": // SEARCH & EDIT
@@ -101,7 +107,7 @@ while (true) {
                     echo "1. Edit Price | 2. Edit Stock | 3. Cancel\nSelection: ";
                     $editChoice = trim(fgets(STDIN));
 
-                    // You can even put a switch inside a switch!
+                    
                     switch ($editChoice) {
                         case "1":
                             echo "Enter new price: ";
@@ -134,7 +140,29 @@ while (true) {
             }
             break;
 
-        case "4": // EXIT
+        case "4":
+            echo "\n--- ADDING NEW PRODUCT ---\n";
+            echo "Type: 1. Hardware | 2. Software: ";
+            $type = trim(fgets(STDIN));
+            
+            echo "Name: ";
+            $name = trim(fgets(STDIN));
+            echo "Price (KES): ";
+            $price = (float)trim(fgets(STDIN));
+            echo "Initial Stock: ";
+            $stock = (int)trim(fgets(STDIN));
+            echo "Category: ";
+            $cat = trim(fgets(STDIN));
+
+            if ($type === "2") {
+                $my_stock[] = new SoftwareProduct($name, $price, $stock, $cat);
+            } else {
+                $my_stock[] = new Product($name, $price, $stock, $cat);
+            }
+            echo "Successfully added $name to the session!\n";
+            break;
+
+        case "5": // EXIT
             echo "Exiting system......Thank you for using the system!\n";
             break 2; 
 
