@@ -1,0 +1,19 @@
+{
+    "name": "leroy/cli-inventory-system",
+    "description": "A professional CLI Inventory Management System for internship week 2.",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Leroy\\CliInventorySystem\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "LeroyOchieng",
+            "email": "leroy.ochieng@strathmore.edu"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
